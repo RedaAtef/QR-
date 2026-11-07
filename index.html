@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>فتح الكاميرا الأمامية</title>
+    <title>فتح الكاميرا</title>
     <style>
         body {
             font-family: system-ui, sans-serif;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -24,38 +23,15 @@
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            border: none;
-            margin-bottom: 20px;
-        }
-        video {
-            width: 90%;
-            max-width: 400px;
-            border-radius: 12px;
-            display: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
-
-    <button class="cam-btn" onclick="openFrontCamera()">📸 اضغط هنا لفتح الكاميرا الأمامية</button>
-    <video id="webcam" autoplay playsinline></video>
-
-    <script>
-        function openFrontCamera() {
-            // طلب الكاميرا الأمامية بوضوح عبر user
-            navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: "user" } 
-            })
-            .then(function(stream) {
-                const video = document.getElementById('webcam');
-                video.srcObject = stream;
-                video.style.display = 'block';
-            })
-            .catch(function(error) {
-                alert("تعذر فتح الكاميرا: " + error.message);
-            });
-        }
-    </script>
+    <!-- تم التغيير إلى capture="user" لفتح الكاميرا الأمامية -->
+    <input type="file" accept="image/*" capture="user" id="cameraInput" style="display: none;">
+    <label for="cameraInput" class="cam-btn">
+        📸 اضغط هنا لفتح الكاميرا
+    </label>
 </body>
 </html>
