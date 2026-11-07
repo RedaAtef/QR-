@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>فتح الكاميرا الأمامية</title>
+    <title>الكاميرا الأمامية</title>
     <style>
         body {
             font-family: system-ui, sans-serif;
@@ -33,6 +33,7 @@
             border-radius: 12px;
             display: none;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transform: scaleX(-1); /* عكس الصورة لتعمل مثل مرآة السيلفي */
         }
     </style>
 </head>
@@ -43,17 +44,30 @@
 
     <script>
         function openFrontCamera() {
-            // طلب الكاميرا الأمامية بوضوح عبر user
-            navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: "user" } 
-            })
+            // استخدام exact لإجبار النظام على اختار الكاميرا الأمامية (user/front) مباشرة
+            const constraints = {
+                video: {
+                    facingMode: { exact: "user" }
+                }
+            };
+
+            navigator.mediaDevices.getUserMedia(constraints)
             .then(function(stream) {
                 const video = document.getElementById('webcam');
                 video.srcObject = stream;
                 video.style.display = 'block';
             })
             .catch(function(error) {
-                alert("تعذر فتح الكاميرا: " + error.message);
+                // في حال عدم دعم exact على بعض الهواتف القديمة، يتم الفتح بالطريقة العادية
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+                .then(function(stream) {
+                    const video = document.getElementById('webcam');
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+                })
+                .catch(function(err) {
+                    alert("تعذر الوصول للكاميرا: " + err.message);
+                });
             });
         }
     </script>
